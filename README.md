@@ -5,7 +5,7 @@ v. 0.4, 2013
 
 ## Description
 
-Linux kernel module analizer is a kernel module designed for monitoring in real time
+Linux kernel module analyzer is a kernel module designed for monitoring in real time
 selected module's functions call count. It can be used to check activity of certain
 functions in module, get their addresses and sizes.
 
@@ -32,8 +32,9 @@ like this:
 	...
 
 There are 4 columns and they have following meaning:
+
 1. Function call count
-2. Function's address in Linux kenrel space
+2. Function's address in Linux kernel space
 3. Function's size in bytes
 4. Function's symbol name.
 
