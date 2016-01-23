@@ -43,7 +43,7 @@ MODULE_PARM_DESC(module_name, "Module name to analyze");
 struct ma_symbol_data
 {
         struct kprobe kp;
-        unsigned long long calls;
+        atomic_long_t calls;
         char *name;
         unsigned long long size;
 };
@@ -72,7 +72,9 @@ static void ma_seq_stop(struct seq_file *s, void *v)
 static int ma_seq_show(struct seq_file *s, void *v)
 {
         struct ma_symbol_data *data = (struct ma_symbol_data*) v;
-        seq_printf(s, "%llu\t%p\t%llu\t%s\n", data->calls, data->kp.addr,
+        seq_printf(s, "%ld\t%p\t%llu\t%s\n", 
+                      atomic_long_read(&data->calls), 
+                      data->kp.addr,
                       data->size, data->name);
         return 0;
 }
@@ -102,7 +104,7 @@ static int ma_pre_handler(struct kprobe *p, struct pt_regs *regs)
 {
         struct ma_symbol_data *data =
                 container_of(p, struct ma_symbol_data, kp);
-        data->calls++;
+        atomic_long_inc(&data->calls);
         return 0;
 }
 
